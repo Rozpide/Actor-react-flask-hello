@@ -1,25 +1,25 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 
-const ActorList = () => {
-    const [actors, setActors] = useState([]);
-
-    useEffect(() => {
-        fetch("/api/actor")
-            .then((response) => response.json())
-            .then((data) => setActors(data))
-            .catch((error) => console.error("Error:", error));
-    }, []);
-
+const ActorList = ({ actors, deleteActor }) => {
     return (
         <div>
-            <h1>Lista de Actores</h1>
-            <ul>
-                {actors.map((actor) => (
-                    <li key={actor.id}>
-                        {actor.name} - {actor.nationality}
-                    </li>
-                ))}
-            </ul>
+            <h2>Lista de Actores</h2>
+            {actors.length === 0 ? (
+                <p>No hay actores disponibles.</p>
+            ) : (
+                <ul className="list-group">
+                    {actors.map((actor) => (
+                        <li key={actor.id} className="list-group-item d-flex justify-content-between align-items-center">
+                            <span>
+                                <strong>{actor.name}</strong> - {actor.nationality}
+                            </span>
+                            <button className="btn btn-danger btn-sm" onClick={() => deleteActor(actor.id)}>
+                                Eliminar
+                            </button>
+                        </li>
+                    ))}
+                </ul>
+            )}
         </div>
     );
 };
